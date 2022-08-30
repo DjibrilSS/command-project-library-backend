@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 require("dotenv").config();
 app.use(cors());
+
 app.use(express.static("public"));
 app.use(require("./routes/book.routes"));
 app.use(require("./routes/genre.routes"));
