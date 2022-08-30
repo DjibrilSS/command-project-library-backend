@@ -3,15 +3,48 @@ const Book = require("../models/Book.model");
 
 module.exports.usersController = {
   addUser: async (req, res) => {
-    const { name, rent } = req.body;
     try {
-      await User.create({
-        name,
-        rent,
+      const { login, password } = req.body;
+
+      const hash = await bcrypt.hash(
+        password,
+        Number(process.env.BCRYPT_ROUNDS)
+      );
+
+      const user = await User.create({ login: login, password: hash });
+
+      res.json(user);
+    } catch (e) {
+      res.json({ error: e.message });
+    }
+  },
+
+  login: async (req, res) => {
+    try {
+      const { login, password } = req.body;
+
+      const candidate = await User.findOne({ login });
+
+      if (!candidate) {
+        return res.status(401).json("Неверный логин");
+        // return res.status(401).json({ error: "Неверный логин" });
+      }
+
+      const valid = await bcrypt.compare(password, candidate.password);
+
+      if (!valid) {
+        return res.status(401).json("неверный пароль");
+      }
+      const payload = {
+        id: candidate._id,
+      };
+      const token = await jwt.sign(payload, process.env.SECRET_JWT_KEY, {
+        expiresIn: "24h",
       });
-      res.json("Пользователь добавлен");
-    } catch (error) {
-      res.json("Ошибка при добавлении пользователя");
+
+      res.json(token);
+    } catch (e) {
+      res.json({ error: e });
     }
   },
 
