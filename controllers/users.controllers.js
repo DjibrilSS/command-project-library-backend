@@ -103,7 +103,7 @@ module.exports.usersController = {
       await Book.findByIdAndUpdate(req.body.book, {
         $pull: { rentedUsers: req.params.userId },
       });
-      res.json("Книга удалена");
+      res.json("книга возвращена");
     } catch (err) {
       res.json(err);
     }
