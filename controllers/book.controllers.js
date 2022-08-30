@@ -7,12 +7,12 @@ module.exports.booksController = {
   },
   addBooks: async (req, res) => {
    try {
-    const { name, genre, Rentedusers, avtor } = req.body;
+    const { name, genre, rentedUsers, author } = req.body;
     await Book.create({
       name,
       genre,
-      Rentedusers,
-      avtor,
+      rentedUsers,
+      author,
     });
     res.json("Добавлена книга");
    } catch (error) {
