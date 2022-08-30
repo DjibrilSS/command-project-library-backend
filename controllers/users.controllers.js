@@ -74,7 +74,7 @@ module.exports.usersController = {
     const user = await User.findById(req.params.id);
     const book = await Book.findById(req.body.rent);
 
-    if (book.rentedUsers !== undefined) {
+    if (book.rentedUsers.length !== 0) {
       return res.json("Книга уже арендована другим пользователем");
     }
     if (user.rent.length > 2) {
