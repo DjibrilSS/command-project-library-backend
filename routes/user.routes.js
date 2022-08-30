@@ -9,6 +9,6 @@ router.post("/users/login", usersController.login);
 router.delete("/users", usersController.deleteUser);
 router.get("/users", usersController.getUsers);
 router.patch("/users/:id",userMiddleware ,usersController.rentBooksUser);
-router.patch("/users/:userId/remove", usersController.takeBook);
+router.patch("/users/:userId/remove", userMiddleware, usersController.takeBook);
 
 module.exports = router;
