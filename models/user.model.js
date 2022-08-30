@@ -1,17 +1,10 @@
 const mongoose = require("mongoose");
 
 const userSchema = mongoose.Schema({
-  name: {
+  password: String,
+  login: {
     type: String,
-    required: true,
   },
-
-  isBlocked: {
-    type: Boolean,
-    required: true,
-    default: false,
-  },
-
   rent: [
     {
       type: mongoose.SchemaTypes.ObjectId,
