@@ -2,17 +2,18 @@ const Book = require("../models/Book.model");
 
 module.exports.booksController = {
   getBooks: async (req, res) => {
-    const data = await Book.find({});
+    const data = await Book.find({}).populate('genre');
     res.json(data);
   },
   addBooks: async (req, res) => {
    try {
-    const { name, genre, rentedUsers, author } = req.body;
+    const { img, name, genre, rentedUsers, author } = req.body;
     await Book.create({
       name,
       genre,
       rentedUsers,
       author,
+      img,
     });
     res.json("Добавлена книга");
    } catch (error) {
