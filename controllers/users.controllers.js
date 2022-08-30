@@ -1,5 +1,7 @@
 const User = require("../models/User.model");
 const Book = require("../models/Book.model");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 module.exports.usersController = {
   addUser: async (req, res) => {
@@ -72,10 +74,7 @@ module.exports.usersController = {
     const user = await User.findById(req.params.id);
     const book = await Book.findById(req.body.rent);
 
-    if (user.isBlocked) {
-      return res.json("Вы заблокированы");
-    }
-    if (book.RentedUsers !== undefined) {
+    if (book.rentedUsers !== undefined) {
       return res.json("Книга уже арендована другим пользователем");
     }
     if (user.rent.length > 2) {
@@ -84,7 +83,7 @@ module.exports.usersController = {
 
     try {
       await user.updateOne({ $addToSet: { rent: book._id } });
-      await book.updateOne({ $addToSet: { RentedUsers: user._id } });
+      await book.updateOne({ $addToSet: { rentedUsers: user._id } });
       res.json("Книга арендована");
     } catch (error) {
       res.json("Ошибка при аренде");
@@ -94,15 +93,15 @@ module.exports.usersController = {
   //Вернуть книгу
 
   takeBook: async (req, res) => {
-    const { rentBooks } = req.body;
+    const { rent } = req.body;
     try {
       await User.findByIdAndUpdate(req.params.userId, {
         $pull: {
-          rentBooks,
+          rent,
         },
       });
       await Book.findByIdAndUpdate(req.body.book, {
-        $pull: { inRent: req.params.userId },
+        $pull: { rentedUsers: req.params.userId },
       });
       res.json("Книга удалена");
     } catch (err) {
