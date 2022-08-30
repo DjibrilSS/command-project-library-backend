@@ -6,11 +6,12 @@ const BookSchema = mongoose.Schema({
         ref:"Genre",
         type: mongoose.Types.ObjectId
     },
-    RentedUsers:[{
+    rentedUsers:[{
         ref: "User",
         type: mongoose.Types.ObjectId
     }],
-    avtor: String
+    author: String,
+    img: String
 
 })
 
