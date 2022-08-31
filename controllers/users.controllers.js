@@ -93,7 +93,9 @@ module.exports.usersController = {
 
     try {
       await user.updateOne({ $addToSet: { rent: book._id } });
-      await book.updateOne({ $addToSet: { rentedUsers: user._id } });
+      await book.updateOne({ $addToSet: { rentedUsers: user._id} });
+      await book.updateOne({status :true})
+      
       res.json("Книга арендована");
     } catch (error) {
       res.json("Ошибка при аренде");
@@ -110,10 +112,14 @@ module.exports.usersController = {
           rent,
         },
       });
+      await Book.findByIdAndUpdate(req.body.rent,{
+        status:false
+      })
       await Book.findByIdAndUpdate(req.body.rent, {
-        $pull: { rentedUsers: req.params.userId },
+        $pull: { rentedUsers: req.params.userId, },
       });
-      c
+      
+      
       res.json(data);
     } catch (err) {
       return res.json(err);

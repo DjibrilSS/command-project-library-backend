@@ -11,7 +11,11 @@ const BookSchema = mongoose.Schema({
         type: mongoose.Types.ObjectId
     }],
     author: String,
-    img: String
+    img: String,
+    status:{
+        type:Boolean,
+        default:false
+    }
 
 })
 
