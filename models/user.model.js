@@ -7,7 +7,7 @@ const userSchema = mongoose.Schema({
   },
   rent: [
     {
-      type: mongoose.SchemaTypes.ObjectId,
+      type:mongoose.Types.ObjectId,
       ref: "Book",
     },
   ],

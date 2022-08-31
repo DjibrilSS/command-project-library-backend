@@ -44,7 +44,7 @@ module.exports.usersController = {
         expiresIn: "24h",
       });
 
-      res.json(token);
+      res.json({token,id:payload.id});
     } catch (e) {
       res.json({ error: e });
     }
@@ -61,12 +61,22 @@ module.exports.usersController = {
 
   getUsers: async (req, res) => {
     try {
-      const usersData = await User.find();
+      const usersData = await User.find({}).populate("rent");
       res.json(usersData);
     } catch (error) {
       res.json("Ошибка при выводе пользователей");
     }
   },
+
+  getUsersid: async (req, res) => {
+    try {
+      const usersData = await User.findById(req.params.id).populate("rent");
+      res.json(usersData);
+    } catch (error) {
+      res.json("Ошибка при выводе пользователей");
+    }
+  },
+  
 
   //User interface
 
@@ -95,17 +105,18 @@ module.exports.usersController = {
   takeBook: async (req, res) => {
     const { rent } = req.body;
     try {
-      await User.findByIdAndUpdate(req.params.userId, {
+      const data =await User.findByIdAndUpdate(req.params.userId, {
         $pull: {
           rent,
         },
       });
-      await Book.findByIdAndUpdate(req.body.book, {
+      await Book.findByIdAndUpdate(req.body.rent, {
         $pull: { rentedUsers: req.params.userId },
       });
-      res.json("книга возвращена");
+      c
+      res.json(data);
     } catch (err) {
-      res.json(err);
+      return res.json(err);
     }
   },
 };
