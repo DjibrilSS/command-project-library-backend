@@ -13,6 +13,8 @@ module.exports.booksController = {
       genre,
       rentedUsers,
       author,
+      pdf,
+      fb2,
       img,
     });
     res.json("Добавлена книга");
