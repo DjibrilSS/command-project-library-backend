@@ -101,6 +101,17 @@ module.exports.usersController = {
       res.json("Ошибка при аренде");
     }
   },
+  patchavatar:async(req,res)=>{
+    try {
+      const data =  await User.findByIdAndUpdate(req.params.id,{
+        avatar: req.body.avatar
+      })
+     return await res.json(data)
+     
+    } catch (error) {
+      
+    }
+  },
 
   //Вернуть книгу
 

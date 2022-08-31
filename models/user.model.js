@@ -11,6 +11,10 @@ const userSchema = mongoose.Schema({
       ref: "Book",
     },
   ],
+  avatar:{
+    type: String,
+    default:"dSxCxs3Vgzk.jpg"
+  }
  
 });
 
