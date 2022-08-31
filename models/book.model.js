@@ -11,6 +11,8 @@ const BookSchema = mongoose.Schema({
         type: mongoose.Types.ObjectId
     }],
     author: String,
+    pdf: String,
+    fb2: String,
     img: String,
     status:{
         type:Boolean,
