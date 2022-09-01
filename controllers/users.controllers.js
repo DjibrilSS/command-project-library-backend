@@ -28,14 +28,14 @@ module.exports.usersController = {
       const candidate = await User.findOne({ login });
 
       if (!candidate) {
-        return res.status(401).json("Неверный логин");
+        return res.status(401).json({error:"Неверный Логин"});
         // return res.status(401).json({ error: "Неверный логин" });
       }
 
       const valid = await bcrypt.compare(password, candidate.password);
 
       if (!valid) {
-        return res.status(401).json("неверный пароль");
+        return res.status(401).json({error:"Неверный пароль"});
       }
       const payload = {
         id: candidate._id,
@@ -107,7 +107,7 @@ module.exports.usersController = {
         avatar: req.body.avatar
       })
      return await res.json(data)
-     
+
     } catch (error) {
       
     }
