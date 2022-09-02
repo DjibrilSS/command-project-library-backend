@@ -85,10 +85,10 @@ module.exports.usersController = {
     const book = await Book.findById(req.body.rent);
 
     if (book.rentedUsers.length !== 0) {
-      return res.json("Книга уже арендована другим пользователем");
+      return res.json({error:"Книга уже арендована другим пользователем"});
     }
     if (user.rent.length > 2) {
-      return res.json("нельзя арендовать больше 3-х книг одновременно");
+      return res.json({error:"нельзя арендовать больше 3-х книг одновременно"});
     }
 
     try {
@@ -96,7 +96,7 @@ module.exports.usersController = {
       await book.updateOne({ $addToSet: { rentedUsers: user._id} });
       await book.updateOne({status :true})
       
-      res.json("Книга арендована");
+      res.json({book,error});
     } catch (error) {
       res.json("Ошибка при аренде");
     }
